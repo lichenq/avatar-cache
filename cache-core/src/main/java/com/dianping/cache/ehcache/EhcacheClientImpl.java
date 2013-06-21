@@ -53,6 +53,8 @@ public class EhcacheClientImpl implements CacheClient, Lifecycle, InitialConfigu
 
     private ReentrantLock       lock                   = new ReentrantLock();
 
+    public static EventBus eventBus = new EventBus();
+
     static {
         try {
             configCacheClass = Class.forName("com.dianping.lion.client.ConfigCache");
@@ -210,7 +212,6 @@ public class EhcacheClientImpl implements CacheClient, Lifecycle, InitialConfigu
         Ehcache cache = manager.getCache(TEMPLATE_CACHE_NAME);
         defaultBlockingCache = new LooseBlockingCache(cache);
         manager.replaceCacheWithDecoratedCache(cache, defaultBlockingCache);
-        EventBus eventBus = new EventBus();
         eventBus.post(new EhcacheEvent(manager));
     }
 
