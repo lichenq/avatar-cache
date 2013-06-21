@@ -20,6 +20,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.management.MBeanServer;
 
+import com.google.common.eventbus.EventBus;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
@@ -52,6 +53,8 @@ public class EhcacheClientImpl implements CacheClient, Lifecycle, InitialConfigu
 
     private ReentrantLock       lock                   = new ReentrantLock();
 
+    public static EventBus eventBus = new EventBus();
+
     static {
         try {
             configCacheClass = Class.forName("com.dianping.lion.client.ConfigCache");
@@ -68,7 +71,8 @@ public class EhcacheClientImpl implements CacheClient, Lifecycle, InitialConfigu
     private BlockingCache       defaultBlockingCache;
 
     /**
-     * @see com.dianping.cache.core.CacheClient#add()
+     * @see com.dianping.cache.core.CacheClient#
+     * add()
      */
     @Override
     public void add(String key, Object value, int expiration, String category) {
@@ -90,7 +94,8 @@ public class EhcacheClientImpl implements CacheClient, Lifecycle, InitialConfigu
     }
 
     /**
-     * @see com.dianping.cache.core.CacheClient#decrement(java.lang.String, int)
+     * @see com.dianping.cache.core.CacheClient#
+     * decrement(java.lang.String, int)
      */
     @Override
     public long decrement(String key, int amount, String category) {
@@ -110,7 +115,8 @@ public class EhcacheClientImpl implements CacheClient, Lifecycle, InitialConfigu
     }
 
     /**
-     * @see com.dianping.cache.core.CacheClient#get(java.lang.String)
+     * @see com.dianping.cache.core.CacheClient#
+     * get(java.lang.String)
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -120,7 +126,8 @@ public class EhcacheClientImpl implements CacheClient, Lifecycle, InitialConfigu
     }
 
     /**
-     * @see com.dianping.cache.core.CacheClient#getBulk(java.util.Collection)
+     * @see com.dianping.cache.core.CacheClient#
+     * getBulk(java.util.Collection)
      */
     @Override
     public <T> Map<String, T> getBulk(Collection<String> keys, Map<String, String> categories) {
@@ -128,7 +135,8 @@ public class EhcacheClientImpl implements CacheClient, Lifecycle, InitialConfigu
     }
 
     /**
-     * @see com.dianping.cache.core.CacheClient#increment(java.lang.String, int)
+     * @see com.dianping.cache.core.CacheClient#
+     * increment(java.lang.String, int)
      */
     @Override
     public long increment(String key, int amount, String category) {
@@ -156,7 +164,8 @@ public class EhcacheClientImpl implements CacheClient, Lifecycle, InitialConfigu
     }
 
     /**
-     * @see com.dianping.cache.core.CacheClient#replace(java.lang.String,
+     * @see com.dianping.cache.core.CacheClient#
+     * replace(java.lang.String,
      *      java.lang.Object, int)
      */
     @Override
@@ -168,7 +177,8 @@ public class EhcacheClientImpl implements CacheClient, Lifecycle, InitialConfigu
     }
 
     /**
-     * @see com.dianping.cache.core.CacheClient#set(java.lang.String,
+     * @see com.dianping.cache.core.CacheClient#
+     * set(java.lang.String,
      *      java.lang.Object, int)
      */
     @Override
@@ -202,6 +212,7 @@ public class EhcacheClientImpl implements CacheClient, Lifecycle, InitialConfigu
         Ehcache cache = manager.getCache(TEMPLATE_CACHE_NAME);
         defaultBlockingCache = new LooseBlockingCache(cache);
         manager.replaceCacheWithDecoratedCache(cache, defaultBlockingCache);
+        eventBus.post(new EhcacheEvent(manager));
     }
 
     /**
