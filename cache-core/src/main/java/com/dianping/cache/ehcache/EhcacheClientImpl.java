@@ -12,14 +12,11 @@
  */
 package com.dianping.cache.ehcache;
 
-import java.lang.management.ManagementFactory;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.locks.ReentrantLock;
-
-import javax.management.MBeanServer;
-
+import com.dianping.cache.core.CacheClient;
+import com.dianping.cache.core.CacheClientConfiguration;
+import com.dianping.cache.core.InitialConfiguration;
+import com.dianping.cache.core.Lifecycle;
+import com.dianping.lion.client.ConfigCache;
 import com.google.common.eventbus.EventBus;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Ehcache;
@@ -27,11 +24,12 @@ import net.sf.ehcache.Element;
 import net.sf.ehcache.constructs.blocking.BlockingCache;
 import net.sf.ehcache.management.ManagementService;
 
-import com.dianping.cache.core.CacheClient;
-import com.dianping.cache.core.CacheClientConfiguration;
-import com.dianping.cache.core.InitialConfiguration;
-import com.dianping.cache.core.Lifecycle;
-import com.dianping.lion.client.ConfigCache;
+import javax.management.MBeanServer;
+import java.lang.management.ManagementFactory;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * EhcacheClientImpl 4 avatar local cache!
