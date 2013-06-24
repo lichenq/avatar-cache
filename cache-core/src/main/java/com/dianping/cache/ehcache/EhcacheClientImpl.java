@@ -18,6 +18,7 @@ import com.dianping.cache.core.InitialConfiguration;
 import com.dianping.cache.core.Lifecycle;
 import com.dianping.lion.client.ConfigCache;
 import com.google.common.eventbus.EventBus;
+import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
@@ -33,10 +34,10 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * EhcacheClientImpl 4 avatar local cache!
- * 
+ *
  * @author pengshan.zhang
  * @author jinhua.liang
- * 
+ *
  */
 public class EhcacheClientImpl implements CacheClient, Lifecycle, InitialConfiguration {
 
@@ -51,7 +52,7 @@ public class EhcacheClientImpl implements CacheClient, Lifecycle, InitialConfigu
 
     private ReentrantLock       lock                   = new ReentrantLock();
 
-    public static EventBus eventBus = new EventBus();
+    public static final EventBus eventBus = new EventBus();
 
     static {
         try {
@@ -61,12 +62,20 @@ public class EhcacheClientImpl implements CacheClient, Lifecycle, InitialConfigu
         }
     }
 
+    public static void publishCacheManager() {
+        eventBus.post(new EhcacheEvent(manager));
+    }
+
     /**
      * Ehcache CacheManager instance
      */
-    private CacheManager        manager;
+    private static CacheManager        manager;
 
     private BlockingCache       defaultBlockingCache;
+
+    public static Cache getCache(String cacheName) {
+        return manager.getCache(cacheName);
+    }
 
     /**
      * @see com.dianping.cache.core.CacheClient#
@@ -210,7 +219,6 @@ public class EhcacheClientImpl implements CacheClient, Lifecycle, InitialConfigu
         Ehcache cache = manager.getCache(TEMPLATE_CACHE_NAME);
         defaultBlockingCache = new LooseBlockingCache(cache);
         manager.replaceCacheWithDecoratedCache(cache, defaultBlockingCache);
-        eventBus.post(new EhcacheEvent(manager));
     }
 
     /**
