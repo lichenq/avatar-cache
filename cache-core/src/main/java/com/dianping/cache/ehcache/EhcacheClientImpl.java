@@ -18,7 +18,6 @@ import com.dianping.cache.core.InitialConfiguration;
 import com.dianping.cache.core.Lifecycle;
 import com.dianping.lion.client.ConfigCache;
 import com.google.common.eventbus.EventBus;
-import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
@@ -62,16 +61,16 @@ public class EhcacheClientImpl implements CacheClient, Lifecycle, InitialConfigu
         }
     }
 
-    public void publishCacheManager() {
-        eventBus.post(new EhcacheEvent(manager));
-    }
-
     /**
      * Ehcache CacheManager instance
      */
-    private CacheManager manager;
+    private static CacheManager manager;
 
     private BlockingCache defaultBlockingCache;
+
+    public static void publishCacheManager() {
+        eventBus.post(new EhcacheEvent(manager));
+    }
 
     /**
      * @see com.dianping.cache.core.CacheClient#
