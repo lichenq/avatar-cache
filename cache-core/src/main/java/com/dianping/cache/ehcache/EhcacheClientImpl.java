@@ -62,20 +62,16 @@ public class EhcacheClientImpl implements CacheClient, Lifecycle, InitialConfigu
         }
     }
 
-    public static void publishCacheManager() {
+    public void publishCacheManager() {
         eventBus.post(new EhcacheEvent(manager));
     }
 
     /**
      * Ehcache CacheManager instance
      */
-    private static CacheManager        manager;
+    private CacheManager manager;
 
-    private BlockingCache       defaultBlockingCache;
-
-    public static Cache getCache(String cacheName) {
-        return manager.getCache(cacheName);
-    }
+    private BlockingCache defaultBlockingCache;
 
     /**
      * @see com.dianping.cache.core.CacheClient#
