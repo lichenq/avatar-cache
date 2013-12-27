@@ -19,7 +19,7 @@
 		<param-name>log4jRefreshInterval</param-name>
 		<param-value>60000</param-value>
 	</context-param>
-	
+
 	<context-param>
 	    <param-name>webAppRootKey</param-name>
 	    <param-value>cache-server.root</param-value>
@@ -37,7 +37,7 @@
 			<param-value>true</param-value>
 		</init-param>
 	</filter>
-	
+
 	<filter>
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -49,7 +49,7 @@
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
 	</filter-mapping>
-	
+
 	<filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
@@ -62,12 +62,12 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-	
+
 	<listener>
         <listener-class>flex.messaging.HttpFlexSession</listener-class>
     </listener>
 
-	<!-- 
+	<!--
 	<servlet>
 		<servlet-name>remoting</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -83,7 +83,7 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
-	
+
 	<servlet>
 		<servlet-name>cache-sender</servlet-name>
 		<servlet-class>com.dianping.cache.servlet.CacheMessageSenderServlet</servlet-class>
@@ -95,23 +95,23 @@
 		<servlet-class>com.dianping.cache.servlet.RestCacheManagementServlet</servlet-class>
 		<load-on-startup>2</load-on-startup>
 	</servlet>
-	<!-- 
+	<!--
 	<servlet-mapping>
 		<servlet-name>remoting</servlet-name>
 		<url-pattern>/remoting/*</url-pattern>
 	</servlet-mapping>
 	 -->
-	
+
 	<servlet-mapping>
 		<servlet-name>cache-sender</servlet-name>
 		<url-pattern>/cache-message/send.action</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet-mapping>
 		<servlet-name>rest-CacheManagement</servlet-name>
 		<url-pattern>/cacheAdminRest/*</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet-mapping>
         <servlet-name>flex</servlet-name>
         <url-pattern>/messagebroker/*</url-pattern>
